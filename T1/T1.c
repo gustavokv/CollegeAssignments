@@ -33,12 +33,12 @@ void printExpMatrix(unsigned ordem, float m[][ordem], float mi[][ordem]){ //Prin
 }
 
 void printJacobiMethod(unsigned ordem, double s[ordem], double stop, unsigned iteration) { //Print the solutions.
-    printf("\n--> Solução da iteração %u:\n", iteration);
+    printf("\n--> Solution from the interation %u:\n", iteration);
     for(int i=0;i<ordem;i++) {
         printf("x%u = %.7lf\n", i+1, s[i]);
     }
 
-    printf("--> Com o teste de parada em: %.7lf\n", stop);
+    printf("--> With the stop test in: %.7lf\n", stop);
 }
 
 void invertLineExp(unsigned ordem, float m[][ordem], float inv[][ordem]){
@@ -77,7 +77,7 @@ void jordanMethod() {
     int manipLinha;
     float Mij;
 
-    printf("Qual a ordem da matriz? [1-10]\n-->");
+    printf("Whats the matrix order? [1-10]\n-->");
     scanf("%u", &ordem);
 
     if(ordem<0)
@@ -87,7 +87,7 @@ void jordanMethod() {
 
     float matriz[ordem][ordem], matrizInv[ordem][ordem];
 
-    printf("\nPreencha a matriz:\n\n");
+    printf("\nFill the matrix:\n\n");
 
     for(i=0;i<ordem;i++) {
         for(j=0;j<ordem;j++){ //Fill the matrix and creates the indentity matrix.
@@ -136,7 +136,7 @@ void jordanMethod() {
         printExpMatrix(ordem, matriz, matrizInv);
     }
 
-    for(manipLinha=0;manipLinha<ordem;manipLinha++) { //Faz a diagonal principal da matriz inicial ser 1, tranformando em identidade.
+    for(manipLinha=0;manipLinha<ordem;manipLinha++) { //Make the main diagonal from the initial matrix be 1, transforming in identity.
         printf("\n--> L%d = 1/%.1f * L%d", manipLinha+1, matriz[manipLinha][manipLinha], manipLinha+1);
 
         j=0;
@@ -154,11 +154,11 @@ void jordanMethod() {
     printf("\n");
     printExpMatrix(ordem, matriz, matrizInv);
 
-    printf("\n--> Matriz inversa:\n");
+    printf("\n--> Reverse matrix:\n");
     printMatrix(ordem, matrizInv);
 }
 
-//Caso na convergência precise trocar as linhas.
+//If in the convergence is needed to change rows.
 void invertLineSystem(unsigned ordem, double sys[][ordem+1], unsigned orig, unsigned change) {
     double aux[ordem+1];
 
@@ -173,7 +173,7 @@ void invertLineSystem(unsigned ordem, double sys[][ordem+1], unsigned orig, unsi
     }
 }
 
-//Verifica a convergência do sistema, caso não possua, alerta ao usuário e caso precise trocar as linhas ele troca.
+//Verify the convergence from the system, if it doesn't, alerts the user and if is needed to change the rows it changes.
 void verifyConvergence(unsigned ordem, double sys[][ordem+1]) {
     unsigned i, j, convConfirm;
     double convTest, convTestAux;
@@ -205,7 +205,7 @@ void verifyConvergence(unsigned ordem, double sys[][ordem+1]) {
                 }
             }
             if(!convConfirm) {
-                printf("--> A convergência não é garantida!\n");
+                printf("--> The comvergence is not guaranteed!\n");
                 system("read -p \"\nPressione enter para sair.\" saindo");
                 exit(1);
             }
@@ -215,9 +215,9 @@ void verifyConvergence(unsigned ordem, double sys[][ordem+1]) {
 
 void jacobiMethod() {
     unsigned ordem, i, j, iterationLvl=1;
-    double precision, stopTest = 1000, bigger; //bigger serve para ajudar a calcular o maior valor em módulo da solução para calcular o teste de parada.
+    double precision, stopTest = 1000, bigger; //bigger helps to calculate the biggest value in module from the solution to calculate the stop test.
 
-    printf("--> Digite a ordem da matriz [1-10]:\n");
+    printf("--> Insert the matrix order [1-10]:\n");
     scanf("%u", &ordem);
 
     if (ordem < 0)
@@ -227,7 +227,7 @@ void jacobiMethod() {
 
     double system[ordem][ordem + 1], initSolution[ordem], solution[ordem];
 
-    printf("\n--> Preencha o sistema linear:\n");
+    printf("\n--> Fill the linear system:\n");
     for (i = 0; i < ordem; i++) {
         for (j = 0; j < ordem; j++) {
             printf("i=%u j=%u\n-->", i + 1, j + 1);
@@ -239,10 +239,10 @@ void jacobiMethod() {
 
     verifyConvergence(ordem, system);
 
-    printf("\n--> Qual a precisão?\n-->");
+    printf("\n--> Whats the precision?\n-->");
     scanf("%lf", &precision);
 
-    printf("\n--> E a solução inicial?\n");
+    printf("\n--> And the initial solution?\n");
     for (i = 0; i < ordem; i++) {
         printf("x%u = ", i + 1);
         scanf("%lf", &initSolution[i]);
@@ -251,18 +251,18 @@ void jacobiMethod() {
     while(stopTest > precision){
         bigger = 0;
 
-        printf("\n--> Nível da interação: %d.", iterationLvl);
+        printf("\n--> Iteration level: %d.", iterationLvl);
         for(i=0;i<ordem;i++) {
-            solution[i] = system[i][ordem]; //A solução inicia com a constante após o =.
+            solution[i] = system[i][ordem]; //The solution begins with the constant after =.
 
             for(j=0;j<ordem;j++){
                 if(i!=j)
-                    solution[i] += -system[i][j] * initSolution[j]; //"Passa para o outro lado" os valores.
+                    solution[i] += -system[i][j] * initSolution[j]; //"Pass to the other side" the values.
             }
-            solution[i] /= system[i][i]; //Divide pelo 1/a(ii);
+            solution[i] /= system[i][i]; //Devides by 1/a(ii);
         }
 
-        for(i=0;i<ordem;i++){ //Verifica qual o maior número em módulo para calcular o erro.
+        for(i=0;i<ordem;i++){ //Verify whats the biggest number in module to calculates the error.
             if(fabs(solution[i])>=fabs(bigger)) {
                 bigger = solution[i];
                 j = i;
@@ -274,12 +274,12 @@ void jacobiMethod() {
         printJacobiMethod(ordem, solution, stopTest, iterationLvl);
 
         for(i=0;i<ordem;i++)
-            initSolution[i] = solution[i]; //Coloca solução atual na solução anterior para calcular o erro.
+            initSolution[i] = solution[i]; //Put the initial solution in the previous solution to calculate the error.
 
         iterationLvl++;
     }
 
-    printf("\n--> Solução final:\n");
+    printf("\n--> Final solution:\n");
     for(i=0;i<ordem;i++) {
         printf("%.7lf\n", solution[i]);
     }
@@ -289,13 +289,13 @@ int main() {
     unsigned mainChoose;
 
     do{
-        printf("---Sistemas Lineares---\n"
-               "1) Inversao de Matrizes pelo Metodo de Jordan\n"
-               "2) Resolucao de Sistemas Lineares Pelo Metodo de Jacobi\n--> ");
+        printf("---Linear Systems---\n"
+               "1) Matrix inversion by Jordan's Method\n"
+               "2) Linear System resolutions by Jacobi's Method\n--> ");
         scanf("%u", &mainChoose);
 
         if(mainChoose!=1 && mainChoose!=2)
-            printf("\nAs escolhas sao 1 e 2!\n");
+            printf("\nThe chooses are 1 and 2!\n");
         else
             break;
 
@@ -310,7 +310,7 @@ int main() {
 
     clock_t end = clock();
 
-    printf("\nTempo de execução: %lf\n", (double)(end-begin) / CLOCKS_PER_SEC);
+    printf("\nExecution time: %lf\n", (double)(end-begin) / CLOCKS_PER_SEC);
 
     return 0;
 }
