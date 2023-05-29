@@ -1,3 +1,3 @@
-# NumericalCalculus
+# CollegeAssignments
 
-The following codes are from Numerical Calculus from my undergraduate.
+There are some random assignments from my undergraduate.
